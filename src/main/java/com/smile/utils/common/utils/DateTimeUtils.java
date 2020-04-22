@@ -2,6 +2,9 @@ package com.smile.utils.common.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -97,5 +100,30 @@ public class DateTimeUtils {
         Date date = new Date();
         date.setTime(millis);
         return new SimpleDateFormat(dateType).format(date);
+    }
+
+    /**
+     * 两个时间(yyyy-MM-dd HH:mm:ss)的比较
+     * 时间1大于时间2则返回true
+     *
+     * @param date1 时间1
+     * @param date2 时间2
+     * @return 结果
+     */
+    public static boolean dateCompare(String date1, String date2) {
+        return dateTransform(date1) > dateTransform(date2);
+    }
+
+    /**
+     * 将字符串格式时间转化为毫秒值
+     *
+     * @param date yyyy-MM-dd HH:mm:ss格式时间
+     * @return 毫秒值
+     */
+    public static long dateTransform(String date) {
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        // 将字符串时间转化为毫秒值
+        LocalDateTime time1 = LocalDateTime.parse(date, fmt);
+        return time1.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
     }
 }
